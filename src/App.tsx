@@ -5,6 +5,7 @@ import { MainPage } from "./pages/MainPage/MainPage";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 import { ReagistrationPage } from "./pages/ReagistrationPage/ReagistrationPage";
+import { ForgetPasswordPage } from "./pages/ForgetPasswordPage/ForgetPasswordPage";
 
 const routerConfig = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const routerConfig = createBrowserRouter([
   {
     path: "/reagistration",
     element: <ReagistrationPage />,
+  },
+  {
+    path: "/forgetpassword",
+    element: <ForgetPasswordPage />,
   },
 ]);
 

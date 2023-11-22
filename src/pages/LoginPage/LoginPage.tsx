@@ -29,7 +29,7 @@ export const LoginPage = () => {
           />
           <Button isPrimary buttonText="Войти" />
         </form>
-        <StlyledLink to="/" linkText="Забыли пароль?" />
+        <StlyledLink to="/forgetpassword" linkText="Забыли пароль?" />
         <div className="textLogin">
           <span>
             У вас нет аккаунта? <a href="./reagistration">Зарегистрироваться</a>

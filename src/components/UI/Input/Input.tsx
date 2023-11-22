@@ -9,10 +9,16 @@ export const Input = ({
   placeholder,
   errorMessage,
   isError,
+  ...props
 }: IInputProps) => {
   return (
     <InputContainer>
-      <StyledInput type={type} placeholder={placeholder}></StyledInput>
+      <StyledInput
+        type={type}
+        $isError={isError}
+        placeholder={placeholder}
+        {...props}
+      ></StyledInput>
       {isError && <ErrorMessage> {errorMessage}</ErrorMessage>}
     </InputContainer>
   );
