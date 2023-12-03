@@ -20,9 +20,9 @@ export const StyleLoginPage = styled.div`
     border: 2px solid ${(props) => props.theme.colors.disabledBgc};
     background-color: transparent;
 
-    &:last-child {
+    /* &:last-child {
       margin-bottom: 40px;
-    }
+    } */
 
     &:is(:hover, :focus) {
       border-color: ${(props) => props.theme.colors.primeColor};

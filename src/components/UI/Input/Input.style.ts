@@ -16,7 +16,6 @@ interface IStyledInputProps {
 export const StyledInput = styled.input<IStyledInputProps>`
   outline: 0;
   font-family: inherit;
-
   padding: 12px 15px;
   background-color: ${(props) => props.theme.colors.bgc};
   border-radius: 10px;
@@ -26,7 +25,8 @@ export const StyledInput = styled.input<IStyledInputProps>`
     props.$isError &&
     css`
       border-color: ${(props) => props.theme.colors.red};
-    `}
+    `
+  }
 
   transition: 200ms;
 
