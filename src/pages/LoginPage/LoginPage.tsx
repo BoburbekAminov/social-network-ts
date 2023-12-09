@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { Heading } from "../../components/Typography/Heading";
 import { StlyledLink } from "../../components/Typography/StlyledLink";
@@ -11,23 +11,22 @@ import { Header } from "../../components/UI/Header/Header";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+import { useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "../../store/API/authApi";
+
 interface ILoginForm {
-  userphone: string;
+  useremail: string;
   userpassword: string;
 }
 
-const regexUZB = /^(?:\+998)?(?:\d{2})?(?:\d{7})$/;
-
 const loginFormSchema = yup.object({
-  userphone: yup
-    .string()
-    .matches(regexUZB, "Введите узбекский номер телефона!")
-    .required("Обязательное поле!"),
+  useremail: yup.string().email().required("Обязательное поле!"),
   userpassword: yup
     .string()
     .min(4, "Пароль должен содержат ")
     .required("Обязательное поле!"),
 });
+
 export const LoginPage = () => {
   const {
     control,
@@ -36,16 +35,26 @@ export const LoginPage = () => {
   } = useForm<ILoginForm>({
     resolver: yupResolver(loginFormSchema),
     defaultValues: {
-      userphone: "",
+      useremail: "",
       userpassword: "",
     },
   });
 
-  console.warn("ERRORS:", errors);
+  const navigate = useNavigate();
+
+  const [loginUser, { data: userData }] = useLoginUserMutation();
 
   const onLoginSubmit: SubmitHandler<ILoginForm> = (data) => {
-    console.log("DATA:", data);
+    loginUser({ email: data.useremail, password: data.userpassword });
   };
+
+  useEffect(() => {
+    // console.log(userData)
+
+    if (userData?.user_id) {
+      navigate("/profile");
+    }
+  }, [userData, navigate]);
 
   return (
     <Container>
@@ -54,14 +63,14 @@ export const LoginPage = () => {
         <Heading headingText="Авторизация" />
         <form onSubmit={handleSubmit(onLoginSubmit)}>
           <Controller
-            name="userphone"
+            name="useremail"
             control={control}
             render={({ field }) => (
               <Input
-                isError={errors.userphone ? true : false}
-                errorMessage={errors.userphone?.message}
-                type="tel"
-                placeholder="Номер телефона"
+                isError={errors.useremail ? true : false}
+                errorMessage={errors.useremail?.message}
+                type="email"
+                placeholder="Почта"
                 {...field}
               />
             )}

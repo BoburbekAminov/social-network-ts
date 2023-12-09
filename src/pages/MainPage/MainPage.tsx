@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Header } from "../../components/UI/Header/Header";
 import { Container } from "../../components/UI/Container/Container.style";
 import { StyleMainPage } from "./MainPage.styled";
+import { Post } from "../../components/Post/Post";
+import {
+  useGetPostListQuery,
+  useLazyGetPostListQuery,
+} from "../../store/API/postApi";
+import { date } from "yup";
 
 export const MainPage = () => {
+  // const { data, isLoading, isError } = useGetPostListQuery(null);
+
+  const [fetchTrigger, { data, isLoading, isError }] =
+    useLazyGetPostListQuery();
+
+  useEffect(() => {
+    fetchTrigger(null);
+
+    console.log("data", data);
+  }, [fetchTrigger, data]);
+
   return (
     <Container>
       <StyleMainPage>
@@ -386,7 +403,17 @@ export const MainPage = () => {
               </div>
             </div>
           </div>
-          <div className="Post _liked _marked">
+
+          {data?.message.length &&
+            data.message.map((post) => (
+              <Post
+                postText={post.main_text}
+                regDate={post.reg_date}
+                userName={post.user_fk.name}
+              />
+            ))}
+
+          {/* <div className="Post _liked _marked">
             <div className="UserElem">
               <img src="./img/users/aleksandr-maykov.jpeg" alt="User" />
               <div className="user__description">
@@ -517,8 +544,8 @@ export const MainPage = () => {
                 <circle id="ellipse_3" cx="2.5" cy="2.5" r="2.5" />
               </g>
             </svg>
-          </div>
-          <div className="Post Repost _liked _marked">
+          </div> */}
+          {/* <div className="Post Repost _liked _marked">
             <div className="UserElem Repost__owner">
               <img src="./img/users/mark-krahmalev.jpeg" alt="User" />
               <div className="user__description">
@@ -639,7 +666,7 @@ export const MainPage = () => {
                 <circle id="ellipse_3" cx="2.5" cy="2.5" r="2.5" />
               </g>
             </svg>
-          </div>
+          </div> */}
         </main>
         <aside className="RightSide">
           <div className="List">

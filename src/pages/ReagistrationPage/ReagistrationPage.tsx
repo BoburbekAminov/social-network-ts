@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { Header } from "../../components/UI/Header/Header";
 import { Container } from "../../components/UI/Container/Container.style";
@@ -8,11 +9,15 @@ import { Button } from "../../components/UI/Button/Button";
 import { StyleReagistrationPage } from "./ReagistrationPage.style";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigate } from "react-router-dom";
+import { useRegisterUserMutation } from "../../store/API/authApi";
 
 interface IRegistrationForm {
   username: string;
   userphone: string;
   userpassword: string;
+  useremail: string;
+  usercity: string;
 }
 
 const regexUZB = /^(?:\+998)?(?:\d{2})?(?:\d{7})$/;
@@ -27,6 +32,8 @@ const registrationFormSchema = yup.object({
     .string()
     .min(4, "Пароль должен содержат ")
     .required("Обязательное поле!"),
+  useremail: yup.string().email().required("Обязательное поле!"),
+  usercity: yup.string().required("Обязательное поле!"),
 });
 
 export const ReagistrationPage = () => {
@@ -38,17 +45,36 @@ export const ReagistrationPage = () => {
     resolver: yupResolver(registrationFormSchema),
     defaultValues: {
       username: "",
+      useremail: "",
+      usercity: "",
       userphone: "",
       userpassword: "",
     },
   });
 
-  console.warn("ERRORS:", errors);
+  // console.warn("ERRORS:", errors);
+  const navigate = useNavigate();
+
+  const [registerUser, { data: userData }] = useRegisterUserMutation();
 
   const onRegistrationSubmit: SubmitHandler<IRegistrationForm> = (data) => {
-    console.log("DATA:", data);
+    registerUser({
+      email: data.useremail,
+      password: data.userpassword,
+      name: data.username,
+      phone_number: data.userphone,
+      user_city: data.usercity,
+    });
+    // console.log("data", data)
   };
 
+  useEffect(() => {
+    // console.log(userData)
+
+    if (userData?.user_id) {
+      navigate("/");
+    }
+  }, [userData, navigate]);
   return (
     <Container>
       <Header />
@@ -64,6 +90,32 @@ export const ReagistrationPage = () => {
                 errorMessage={errors.username?.message}
                 type="text"
                 placeholder="Имя и фамилия"
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            name="useremail"
+            control={control}
+            render={({ field }) => (
+              <Input
+                isError={errors.useremail ? true : false}
+                errorMessage={errors.useremail?.message}
+                type="email"
+                placeholder="Почта"
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            name="usercity"
+            control={control}
+            render={({ field }) => (
+              <Input
+                isError={errors.usercity ? true : false}
+                errorMessage={errors.usercity?.message}
+                type="text"
+                placeholder="страна"
                 {...field}
               />
             )}

@@ -18,7 +18,8 @@ export const Input = ({
         $isError={isError}
         placeholder={placeholder}
         {...props}
-      ></StyledInput>
+      >
+      </StyledInput>
       {isError && <ErrorMessage> {errorMessage}</ErrorMessage>}
     </InputContainer>
   );
