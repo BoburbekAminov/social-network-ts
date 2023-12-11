@@ -2,26 +2,26 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseUrl } from "../../utils/baseUrl";
 
 interface IGetPostListResponse {
-    status: number;
-    message: [
-      {
-        main_text: string;
-        user_id: number;
+  status: number;
+  message: [
+    {
+      main_text: string;
+      user_id: number;
+      id: number;
+      reg_date: string;
+      user_fk: {
+        email: string;
+        phone_number: string;
         id: number;
+        password: string;
+        name: string;
+        user_city: string;
         reg_date: string;
-        user_fk: {
-          email: string;
-          phone_number: string;
-          id: number;
-          password: string;
-          name: string;
-          user_city: string;
-          reg_date: string;
-        };
-        photos: [];
-        comments: string[];
-      }
-    ];
+      };
+      photos: [];
+      comments: string[];
+    }
+  ];
 }
 
 export const postApi = createApi({
@@ -34,4 +34,4 @@ export const postApi = createApi({
   }),
 });
 
-export const { useLazyGetPostListQuery, useGetPostListQuery} = postApi;
+export const { useLazyGetPostListQuery, useGetPostListQuery } = postApi;

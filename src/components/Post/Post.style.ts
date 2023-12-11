@@ -67,4 +67,95 @@ export const StyledPost = styled.div<IStyledPostProps>`
   &__text {
     margin-bottom: 20px;
   }
+  .CommentBlock {
+    cursor: pointer;
+    position: relative;
+    list-style: none;
+
+    display: flex;
+    gap: 15px;
+
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 15px;
+
+    transition: 200ms;
+
+    &:hover {
+      background-color: ${(props) => props.theme.colors.lightGray};
+    }
+
+    &::before {
+      content: "";
+      height: 1px;
+      width: 100%;
+      background-color: ${(props) => props.theme.colors.lightGray};
+
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    img {
+      flex: 0 0 60px;
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .comment__description {
+      flex: 1 1 auto;
+
+      .comment__owner {
+        margin-bottom: 10px;
+        display: inline-block;
+      }
+
+      .comment__text {
+        font-size: calc(0.4vw + 8px); //? 14 - 1440 | 16 - 1920
+        font-weight: 300;
+        margin-bottom: 10px;
+      }
+
+      .reply {
+        color: ${(props) => props.theme.colors.primeColor};
+        font-size: calc(0.4vw + 8px); //? 14 - 1440 | 16 - 1920
+      }
+    }
+
+    .date {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      color: ${(props) => props.theme.colors.gray};
+      font-size: calc(0.4vw + 8px); //? 14 - 1440 | 16 - 1920
+    }
+
+    .icon-like {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+
+      overflow: visible;
+      width: 22px;
+
+      fill: none;
+      stroke: ${(props) => props.theme.colors.darkGray};
+      stroke-width: 2px;
+
+      transition: 200ms;
+
+      &._active {
+        fill: var(--red);
+        stroke: none;
+      }
+
+      &:hover {
+        stroke: none;
+        fill: ${(props) => props.theme.colors.primeColor};
+      }
+    }
+  }
 `;
