@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyleProfilePage = styled.div`
-
+margin-top: 120px;
   display: grid;
   grid-template-areas:
     "L P P"
