@@ -8,8 +8,9 @@ export const StyleLeftSide = styled.aside`
   }
 
   @media (max-width: 730px) {
-    .MainPage {
+    .ProfilePage {
       display: block;
+
 
       .LeftSide {
         display: none;

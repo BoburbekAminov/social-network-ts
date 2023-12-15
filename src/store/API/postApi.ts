@@ -1,27 +1,51 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseUrl } from "../../utils/baseUrl";
 
+export interface PostItem {
+  main_text: string;
+  user_id: number;
+  id: number;
+  reg_date: string;
+  user_fk: {
+    email: string;
+    phone_number: string;
+    id: number;
+    password: string;
+    name: string;
+    user_city: string;
+    reg_date: string;
+  };
+  photos: [];
+  comments: string[];
+}
+
 interface IGetPostListResponse {
   status: number;
-  message: [
-    {
-      main_text: string;
-      user_id: number;
-      id: number;
-      reg_date: string;
-      user_fk: {
-        email: string;
-        phone_number: string;
-        id: number;
-        password: string;
-        name: string;
-        user_city: string;
-        reg_date: string;
-      };
-      photos: [];
-      comments: string[];
-    }
-  ];
+  message: PostItem[];
+}
+interface IGetPostItemByIdResponse {
+  status: number;
+  message: PostItem;
+}
+
+export interface IAddNewPostPayload {
+  user_id: number;
+  main__text: string;
+}
+
+export interface IAddNewPostResponse {
+  status: number;
+  post_id: number;
+}
+
+export interface IEditPostPayload {
+  post_id: number;
+  new_text: string;
+}
+
+export interface IEditPostResponse {
+  status: number;
+  message: string;
 }
 
 export const postApi = createApi({
@@ -31,7 +55,30 @@ export const postApi = createApi({
     getPostList: builder.query<IGetPostListResponse, null>({
       query: () => `/post`,
     }),
+    getPostById: builder.query<IGetPostItemByIdResponse, string>({
+      query: (postId: string) => `/post?post_id=${postId}`,
+    }),
+    addNewPost: builder.mutation<IAddNewPostResponse, IAddNewPostPayload>({
+      query: (payload) => ({
+        url: "/post",
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    editPost: builder.mutation<IEditPostResponse, IEditPostPayload>({
+      query: (payload) => ({
+        url: "/post",
+        method: "PUST",
+        body: payload,
+      }),
+    }),
+    deletePost: builder.mutation<any, any>({
+      query: (post_id: string) => ({
+        url: `/post/?post_id=${post_id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useLazyGetPostListQuery, useGetPostListQuery } = postApi;
+export const { useLazyGetPostListQuery, useLazyGetPostByIdQuery } = postApi;

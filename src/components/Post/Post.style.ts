@@ -29,7 +29,6 @@ export const StyledPost = styled.div<IStyledPostProps>`
       }
     `}
 
-
   ${(props) =>
     props.$isMarked &&
     css`
@@ -67,6 +66,90 @@ export const StyledPost = styled.div<IStyledPostProps>`
   &__text {
     margin-bottom: 20px;
   }
+
+  .icon-more {
+    cursor: pointer;
+    position: absolute;
+    top: calc(1vw + 11px);
+    right: calc(1vw + 11px);
+    width: 25px;
+    padding: 15px;
+    box-sizing: content-box;
+    border-radius: 15px;
+
+    fill: ${(props) => props.theme.colors.darkGray};
+    transition: 200ms;
+
+    &:hover {
+      background-color: ${(props) => props.theme.colors.lightGray};
+    }
+
+    &:active {
+      transition: 100ms;
+      background-color: ${(props) => props.theme.colors.primeColor};
+      fill: white;
+    }
+  }
+
+  .PostControls {
+    display: grid;
+    grid-template-columns: repeat(3, auto) 2fr;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+
+    .icon-wrapper {
+      cursor: pointer;
+      padding: 10px;
+      background-color: ${(props) => props.theme.colors.bgc};
+      border-radius: 15px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      &:hover {
+        background-color: ${(props) => props.theme.colors.lightGray};
+      }
+
+      .count {
+        color: ${(props) => props.theme.colors.darkGray};
+        font-weight: 400;
+      }
+
+      .icon {
+        height: 25px;
+        overflow: visible;
+        fill: transparent;
+        transition: 200ms;
+      }
+
+      .icon-like {
+        stroke: ${(props) => props.theme.colors.darkGray};
+        stroke-width: 2px;
+      }
+
+      .icon-mark {
+        stroke: ${(props) => props.theme.colors.darkGray};
+        stroke-width: 2px;
+      }
+
+      &.mark {
+        justify-self: self-end;
+      }
+    }
+  }
+
   .CommentBlock {
     cursor: pointer;
     position: relative;
@@ -158,4 +241,13 @@ export const StyledPost = styled.div<IStyledPostProps>`
       }
     }
   }
+`;
+
+export const PostSettingsBox = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 8px;
+  background: #fefefe;
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
 `;

@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 import { ReagistrationPage } from "./pages/ReagistrationPage/ReagistrationPage";
 import { ForgetPasswordPage } from "./pages/ForgetPasswordPage/ForgetPasswordPage";
+import { PostPage } from "./pages/PostPage/PostPage";
 
 const routerConfig = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const routerConfig = createBrowserRouter([
   {
     path: "/forgetpassword",
     element: <ForgetPasswordPage />,
+  },
+  {
+    path: "/posts/:postId",
+    element: <PostPage/>,
   },
 ]);
 
