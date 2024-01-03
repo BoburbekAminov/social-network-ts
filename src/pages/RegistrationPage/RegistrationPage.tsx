@@ -1,16 +1,12 @@
-import React, { useEffect } from "react";
-import { Controller, useForm, SubmitHandler } from "react-hook-form";
-import { Header } from "../../components/UI/Header/Header";
-import { Container } from "../../components/UI/Container/Container.style";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { RegistrationInfo } from "../../components/RegistrationInfo/RegistrationInfo";
 import { Heading } from "../../components/Typography/Heading";
-import { RegistrationInfo } from "../../components/Registration/RegistrationInfo";
-import { Input } from "../../components/UI/Input/Input";
 import { Button } from "../../components/UI/Button/Button";
-import { StyleReagistrationPage } from "./ReagistrationPage.style";
+import { Container } from "../../components/UI/Container/Container.style";
+import { Input } from "../../components/UI/Input/Input";
+import { StyledRegistrationPage } from "./RegistrationPage.style";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
-import { useRegisterUserMutation } from "../../store/API/authApi";
 
 interface IRegistrationForm {
   username: string;
@@ -30,13 +26,13 @@ const registrationFormSchema = yup.object({
     .required("Обязательное поле!"),
   userpassword: yup
     .string()
-    .min(4, "Пароль должен содержат ")
+    .min(4, "Пароль должен содержать как минимум 4 символа!")
     .required("Обязательное поле!"),
   useremail: yup.string().email().required("Обязательное поле!"),
   usercity: yup.string().required("Обязательное поле!"),
 });
 
-export const ReagistrationPage = () => {
+export const RegistrationPage = () => {
   const {
     control,
     handleSubmit,
@@ -45,40 +41,22 @@ export const ReagistrationPage = () => {
     resolver: yupResolver(registrationFormSchema),
     defaultValues: {
       username: "",
-      useremail: "",
-      usercity: "",
       userphone: "",
       userpassword: "",
+      useremail: "",
+      usercity: "",
     },
   });
 
-  // console.warn("ERRORS:", errors);
-  const navigate = useNavigate();
-
-  const [registerUser, { data: userData }] = useRegisterUserMutation();
+  // console.warn("ERRORS: ", errors);
 
   const onRegistrationSubmit: SubmitHandler<IRegistrationForm> = (data) => {
-    registerUser({
-      email: data.useremail,
-      password: data.userpassword,
-      name: data.username,
-      phone_number: data.userphone,
-      user_city: data.usercity,
-    });
-    // console.log("data", data)
+    console.log("DATA: ", data);
   };
 
-  useEffect(() => {
-    // console.log(userData)
-
-    if (userData?.user_id) {
-      navigate("/");
-    }
-  }, [userData, navigate]);
   return (
     <Container>
-      <Header />
-      <StyleReagistrationPage>
+      <StyledRegistrationPage>
         <Heading headingText="Регистрация" />
         <form onSubmit={handleSubmit(onRegistrationSubmit)}>
           <Controller
@@ -108,19 +86,6 @@ export const ReagistrationPage = () => {
             )}
           />
           <Controller
-            name="usercity"
-            control={control}
-            render={({ field }) => (
-              <Input
-                isError={errors.usercity ? true : false}
-                errorMessage={errors.usercity?.message}
-                type="text"
-                placeholder="страна"
-                {...field}
-              />
-            )}
-          />
-          <Controller
             name="userphone"
             control={control}
             render={({ field }) => (
@@ -129,6 +94,19 @@ export const ReagistrationPage = () => {
                 errorMessage={errors.userphone?.message}
                 type="tel"
                 placeholder="Номер телефона"
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            name="usercity"
+            control={control}
+            render={({ field }) => (
+              <Input
+                isError={errors.usercity ? true : false}
+                errorMessage={errors.usercity?.message}
+                type="text"
+                placeholder="city"
                 {...field}
               />
             )}
@@ -146,21 +124,20 @@ export const ReagistrationPage = () => {
               />
             )}
           />
+
           <Button
             isPrimary
             disabled={!!Object.keys(errors).length}
             type="submit"
-            buttonText="Войти"
+            buttonText="Зарегистрироваться"
           />
         </form>
-        <div className="textReagistr">
-          <span>
-            Уже есть аккаунт? <a href="./login">Войти</a>
-          </span>
-          <p>Войти с помощью</p>
-        </div>
-        <RegistrationInfo />
-      </StyleReagistrationPage>
+        <RegistrationInfo
+          question="Уже есть аккаунт?"
+          linkURL="/login"
+          linkLabel="Войти"
+        />
+      </StyledRegistrationPage>
     </Container>
   );
 };

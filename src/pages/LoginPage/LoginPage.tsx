@@ -1,16 +1,14 @@
-import React, { useEffect } from "react";
-import { Controller, useForm, SubmitHandler } from "react-hook-form";
-import { Heading } from "../../components/Typography/Heading";
-import { StlyledLink } from "../../components/Typography/StlyledLink";
-import { Button } from "../../components/UI/Button/Button";
-import { Input } from "../../components/UI/Input/Input";
-import { Container } from "../../components/UI/Container/Container.style";
-import { RegistrationInfo } from "../../components/Registration/RegistrationInfo";
-import { StyleLoginPage } from "./LoginPage.style";
-import { Header } from "../../components/UI/Header/Header";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
+import { RegistrationInfo } from "../../components/RegistrationInfo/RegistrationInfo";
+import { Heading } from "../../components/Typography/Heading";
+import { StyledLink } from "../../components/Typography/StyledLink";
+import { Button } from "../../components/UI/Button/Button";
+import { Container } from "../../components/UI/Container/Container.style";
+import { Input } from "../../components/UI/Input/Input";
+import { StyledLoginPage } from "./LoginPage.style";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../../store/API/authApi";
 
@@ -20,10 +18,13 @@ interface ILoginForm {
 }
 
 const loginFormSchema = yup.object({
-  useremail: yup.string().email().required("Обязательное поле!"),
+  useremail: yup
+    .string()
+    .email()
+    .required("Обязательное поле!"),
   userpassword: yup
     .string()
-    .min(4, "Пароль должен содержат ")
+    .min(4, "Пароль должен содержать как минимум 4 символа!")
     .required("Обязательное поле!"),
 });
 
@@ -32,7 +33,7 @@ export const LoginPage = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<ILoginForm>({
+  } = useForm({
     resolver: yupResolver(loginFormSchema),
     defaultValues: {
       useremail: "",
@@ -40,8 +41,8 @@ export const LoginPage = () => {
     },
   });
 
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const [loginUser, { data: userData }] = useLoginUserMutation();
 
   const onLoginSubmit: SubmitHandler<ILoginForm> = (data) => {
@@ -49,17 +50,17 @@ export const LoginPage = () => {
   };
 
   useEffect(() => {
-    // console.log(userData)
+    console.log(userData)
 
     if (userData?.user_id) {
-      navigate("/profile");
+      navigate("/main");
+      localStorage.setItem('userLoginData', JSON.stringify(userData.user_id))
     }
   }, [userData, navigate]);
 
   return (
     <Container>
-      <StyleLoginPage>
-        <Header />
+      <StyledLoginPage>
         <Heading headingText="Авторизация" />
         <form onSubmit={handleSubmit(onLoginSubmit)}>
           <Controller
@@ -89,21 +90,19 @@ export const LoginPage = () => {
             )}
           />
           <Button
-            isPrimary
             disabled={!!Object.keys(errors).length}
+            isPrimary
             type="submit"
             buttonText="Войти"
           />
         </form>
-        <StlyledLink to="/forgetpassword" linkText="Забыли пароль?" />
-        <div className="textLogin">
-          <span>
-            У вас нет аккаунта? <a href="./reagistration">Зарегистрироваться</a>
-          </span>
-          <p>Войти с помощью</p>
-        </div>
-        <RegistrationInfo />
-      </StyleLoginPage>
+        <StyledLink to="/" linkText="Забыли пароль?" />
+        <RegistrationInfo
+          question="У вас нет аккаунта?"
+          linkLabel="Зарегистрироваться"
+          linkURL="/registration"
+        />
+      </StyledLoginPage>
     </Container>
   );
 };

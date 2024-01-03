@@ -15,22 +15,23 @@ export interface PostItem {
     user_city: string;
     reg_date: string;
   };
-  photos: [];
+  photos: string[];
   comments: string[];
 }
 
-interface IGetPostListResponse {
+export interface IGetPostListResponse {
   status: number;
   message: PostItem[];
 }
-interface IGetPostItemByIdResponse {
+
+export interface IGetPostItemByIdResponse {
   status: number;
   message: PostItem;
 }
 
 export interface IAddNewPostPayload {
   user_id: number;
-  main__text: string;
+  main_text: string;
 }
 
 export interface IAddNewPostResponse {
@@ -53,7 +54,7 @@ export const postApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
   endpoints: (builder) => ({
     getPostList: builder.query<IGetPostListResponse, null>({
-      query: () => `/post`,
+      query: () => "/post",
     }),
     getPostById: builder.query<IGetPostItemByIdResponse, string>({
       query: (postId: string) => `/post?post_id=${postId}`,
@@ -68,7 +69,7 @@ export const postApi = createApi({
     editPost: builder.mutation<IEditPostResponse, IEditPostPayload>({
       query: (payload) => ({
         url: "/post",
-        method: "PUST",
+        method: "PUT",
         body: payload,
       }),
     }),
@@ -81,4 +82,10 @@ export const postApi = createApi({
   }),
 });
 
-export const { useLazyGetPostListQuery, useLazyGetPostByIdQuery } = postApi;
+export const {
+  useLazyGetPostListQuery,
+  useLazyGetPostByIdQuery,
+  useAddNewPostMutation,
+  useDeletePostMutation,
+  useEditPostMutation,
+} = postApi;

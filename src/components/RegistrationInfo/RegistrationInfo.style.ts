@@ -3,22 +3,22 @@ import styled from "styled-components";
 export const StyledRegistrationInfo = styled.div`
   margin-top: 30px;
   padding-top: 20px;
-  /* border-top: 1px solid ${(props) => props.theme.colors.lightGray}; */
+  border-top: 1px solid ${(props) => props.theme.colors.lightGray};
 
-  /* span {
+  span {
     display: inline-block;
     font-size: 16px;
     margin-bottom: 40px;
 
     a {
       display: inline;
-      color: ${(props) => props.theme.colors.primeColor};
+      color: var(--prime-color);
     }
   }
 
   p {
     margin-bottom: 30px;
-  } */
+  }
 
   .icons-wrapper {
     display: flex;

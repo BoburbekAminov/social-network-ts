@@ -1,7 +1,8 @@
-import { ErrorMessage, InputContainer, StyledInput } from "./Input.style";
+import { ErrorMessage, StyledInput } from "./Input.style";
+
 interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
-  isError: boolean;
+  isError?: boolean;
 }
 
 export const Input = ({
@@ -12,15 +13,14 @@ export const Input = ({
   ...props
 }: IInputProps) => {
   return (
-    <InputContainer>
+    <div className="InputContainer">
       <StyledInput
         type={type}
-        $isError={isError}
+        $isError={isError || false}
         placeholder={placeholder}
         {...props}
-      >
-      </StyledInput>
-      {isError && <ErrorMessage> {errorMessage}</ErrorMessage>}
-    </InputContainer>
+      />
+      {isError && <ErrorMessage>{errorMessage}</ErrorMessage>}
+    </div>
   );
 };

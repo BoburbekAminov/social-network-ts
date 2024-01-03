@@ -14,12 +14,12 @@ interface IRegisterUserResponse {
   user_id: number;
 }
 
-interface ILoginUserPaload {
+interface ILoginUserPayload {
   email: string;
   password: string;
 }
 
-interface ILoginUserResponse extends IRegisterUserResponse {}
+export interface ILoginUserResponse extends IRegisterUserResponse {}
 
 interface IGetUserResponse {
   status: number;
@@ -46,7 +46,7 @@ export const authApi = createApi({
         }),
       }
     ),
-    loginUser: builder.mutation<ILoginUserResponse, ILoginUserPaload>({
+    loginUser: builder.mutation<ILoginUserResponse, ILoginUserPayload>({
       query: (payload) => ({
         url: "/login",
         method: "POST",

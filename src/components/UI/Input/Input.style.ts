@@ -1,9 +1,5 @@
 import { css, styled } from "styled-components";
 
-export const InputContainer = styled.div`
-  margin-bottom: 20px;
-`;
-
 export const ErrorMessage = styled.p`
   color: ${(props) => props.theme.colors.red};
   margin-top: 10px;
@@ -20,13 +16,13 @@ export const StyledInput = styled.input<IStyledInputProps>`
   background-color: ${(props) => props.theme.colors.bgc};
   border-radius: 10px;
   border: 2px solid ${(props) => props.theme.colors.disabledBgc};
+  width: 100%;
 
   ${(props) =>
     props.$isError &&
     css`
       border-color: ${(props) => props.theme.colors.red};
-    `
-  }
+    `}
 
   transition: 200ms;
 

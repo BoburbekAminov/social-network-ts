@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-export const StyleHistory = styled.div`
+export const StyledHistory = styled.div`
   position: relative;
   overflow: visible;
   margin-bottom: 20px;
 
-  &__wrapper {
+  .History__wrapper {
     display: flex;
     gap: 6px;
     overflow: hidden;

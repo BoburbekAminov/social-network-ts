@@ -1,23 +1,25 @@
-import React from "react";
-import * as yup from "yup";
+import React, { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Modal from "react-modal";
+import { PostItem } from "../../store/API/postApi";
 import {
   PostFormBox,
-  PostFormFooter,
   PostFormContent,
+  PostFormFooter,
   PostFormHeader,
 } from "./PostForm.style";
 import { Heading } from "../../components/Typography/Heading";
+import { useEditPostMutation } from "../../store/API/postApi";
 import { Button } from "../../components/UI/Button/Button";
 import { Input } from "../../components/UI/Input/Input";
-import { useAddNewPostMutation } from "../../store/API/postApi";
-import { useUserId } from "../../hooks/useUserId";
+import { IEditPostPayload } from "../../store/API/postApi";
 
-type AddNewPostFormProps = {
+type EditPostFormProps = {
   isOpen: boolean;
   onCloseModal: () => void;
+  onEditPostSuccess: () => void;
+  post: PostItem;
 };
 
 const customStyles = {
@@ -31,53 +33,45 @@ const customStyles = {
   },
 };
 
-const addNewPostSchema = yup.object({
-  mainText: yup.string().required("Это обязательное поле"),
-});
-
-export const AddNewPostForm = ({
+export const EditPostForm = ({
   isOpen,
+  post,
   onCloseModal,
-}: AddNewPostFormProps) => {
+  onEditPostSuccess,
+}: EditPostFormProps) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(addNewPostSchema),
     defaultValues: {
-      mainText: "",
+      mainText: post.main_text,
     },
   });
 
-  const userId = useUserId();
+  const [editPost, { isLoading, isSuccess }] = useEditPostMutation();
 
-  const [addNewPost, { data: postData, isLoading, isSuccess }] =
-    useAddNewPostMutation();
+  useEffect(() => {
+    if (isSuccess) {
+      onEditPostSuccess();
+    }
+  }, [isSuccess]);
 
-  const handleAddPostFormSubmit: SubmitHandler<{ mainText: string }> = (
+  const handeleEditPostFormSubmit: SubmitHandler<{ mainText: string }> = (
     formData
   ) => {
-    if (formData) {
-      const payload = {
-        user_id: Number(userId),
-        main_text: formData.mainText,
-      };
-
-      addNewPost(payload);
-      onCloseModal();
-    }
-
-    if (isSuccess) {
-      onCloseModal();
-    }
+    const payload: IEditPostPayload = {
+      post_id: post.id,
+      new_text: formData.mainText,
+    };
+    editPost(payload);
   };
 
   return (
     <Modal isOpen={isOpen} style={customStyles}>
-      <PostFormBox onSubmit={handleSubmit(handleAddPostFormSubmit)}>
+      <PostFormBox onSubmit={handleSubmit(handeleEditPostFormSubmit)}>
         <PostFormHeader>
-          <Heading headingType="h3" headingText="Добавить новый пост"></Heading>
+          <Heading headingType="h3" headingText="Редактировать пост" />
         </PostFormHeader>
         <PostFormContent>
           <Controller
@@ -100,7 +94,12 @@ export const AddNewPostForm = ({
             buttonText="Сохранить"
             isPrimary
           />
-          <Button disabled={isLoading} buttonText="Отменить" isPrimary />
+          <Button
+            disabled={isLoading}
+            buttonText="Отменить"
+            isPrimary
+            onClick={onCloseModal}
+          />
         </PostFormFooter>
       </PostFormBox>
     </Modal>
