@@ -6,7 +6,7 @@ import { Header } from "../../components/UI/Header/Header";
 import { Navbar } from "../../components/UI/Navbar/Navbar";
 import { WhatsNew } from "../../components/WhatsNew/WhatsNew";
 import { useLazyGetPostListQuery } from "../../store/API/postApi";
-import "./MainPage.scss";
+// import "./MainPage.scss";
 import { StyledMainPage } from "./MainPage.style";
 import { FullscreenLoader } from "../../components/UI/FullscreenLoader/FullscreenLoader";
 import { EditPostForm } from "../PostPage/EditPostForm";
@@ -34,7 +34,7 @@ export const MainPage = () => {
     setOpenEditPost(true);
   }, []);
 
-  const handkeEditPostSuccess = useCallback(() => {
+  const handleEditPostSuccess = useCallback(() => {
     fetchTrigger(null);
     onEditModalClose();
   }, []);
@@ -142,7 +142,7 @@ export const MainPage = () => {
             isOpen={openEditPOst}
             post={selectedPost}
             onCloseModal={onEditModalClose}
-            onEditPostSuccess={handkeEditPostSuccess}
+            onEditPostSuccess={handleEditPostSuccess}
           />
         )}
         <aside className="RightSide">
